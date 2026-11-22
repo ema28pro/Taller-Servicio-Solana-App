@@ -16,7 +16,7 @@ export default function App() {
   const soloDia3 = aula.modo === 'dia3';
   return <div className="app-layout">
     <aside className="sidebar">
-      <a className="brand" href="#" onClick={(e) => e.preventDefault()}><span className="brand-mark">F</span><span>FixChain<span className="brand-caption">SERVICE LEDGER · SOLANA</span></span></a>
+      <a className="brand" href="#" onClick={(e) => e.preventDefault()}><img className="brand-mark" src="/favicon.svg" alt="" width={37} height={37} /><span>FixChain<span className="brand-caption">SERVICE LEDGER · SOLANA</span></span></a>
       <p className="sidebar-label">OPERACIONES</p>
       <nav aria-label="Secciones de la aplicación">
         <button className={vista === 'conexion' ? 'nav-item selected' : 'nav-item'} disabled={ocupado} onClick={() => setVista('conexion')}><Icono tipo="conexion" /> Conexión</button>
@@ -29,7 +29,7 @@ export default function App() {
         <img className="hero-topbar-img" src="/banner-fixchain.jpg" alt="FixChain — Taller de Servicio Técnico en Solana" />
         <div className="hero-topbar-content">
           <div className="hero-topbar-left">
-            <p className="hero-tagline">Gestión de talleres, equipos y órdenes de reparación verificables en Solana.</p>
+            <p className="hero-tagline">Gestión de talleres, equipos y órdenes de reparación en Solana.</p>
           </div>
           <div className="hero-wallet-wrap">
             <WalletMultiButton>{publicKey ? publicKey.toBase58().slice(0, 4) + '…' + publicKey.toBase58().slice(-4) : 'Conectar wallet'}</WalletMultiButton>
