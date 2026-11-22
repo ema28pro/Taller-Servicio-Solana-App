@@ -1,5 +1,5 @@
 {
-  "name": "registro-ventas-solana-app",
+  "name": "fixchain-solana-app",
   "private": true,
   "version": "0.1.0",
   "type": "module",
@@ -11,9 +11,6 @@
     "typecheck": "tsc -b",
     "test": "node --import tsx --test tests/*.test.ts",
     "configurar:idl": "node scripts/configurar-idl.mjs",
-    "clase:dia3": "node scripts/preparar-clase.mjs dia3",
-    "clase:dia4": "node scripts/preparar-clase.mjs dia4",
-    "clase:resuelto": "node scripts/preparar-clase.mjs resuelto",
     "verificar": "npm run typecheck && npm test && npm run build",
     "comprobar:idl": "node scripts/verificar-contrato.mjs",
     "prebuild": "npm run comprobar:idl",

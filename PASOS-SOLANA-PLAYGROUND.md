@@ -53,6 +53,5 @@ Ejecuta estos comandos dentro de `Taller-Servicio-Solana-App/`:
 ## 3. Advertencias importantes
 
 - **`npm run verificar` fallará** incluso después de configurar el IDL, porque la carpeta `tests/` (`tests/integracion-cliente.test.ts`) se mantuvo intacta y sigue probando el programa original de ventas (`registro`). Utiliza `npm run typecheck` y `npm run build` para validar tu proyecto.
-- **Nunca ejecutes `npm run clase:*`** (`clase:dia3`, `clase:dia4`, `clase:resuelto`), porque `scripts/preparar-clase.mjs` sobrescribe `src/solana/acciones.ts` con la versión original de ventas.
 - Si deseas personalizar el nombre visible de la aplicación o el nombre sugerido por defecto, edita **`src/config/interfaz.ts`** (`TITULO_APP`, `TALLER_INICIAL`, `UNIDAD_COSTO`).
 - No edites manualmente `clients/js/src/generated/`: siempre se regenera automáticamente mediante `npm run configurar:idl` o `npm run cliente`.
