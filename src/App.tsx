@@ -29,7 +29,7 @@ export default function App() {
         <img className="hero-topbar-img" src="/banner-fixchain.jpg" alt="FixChain — Taller de Servicio Técnico en Solana" />
         <div className="hero-topbar-content">
           <div className="hero-topbar-left">
-            <p className="hero-tagline">Gestión de talleres, equipos y órdenes de reparación en Solana.</p>
+            <p className="hero-tagline">Gestión de talleres, equipos y órdenes de reparación</p>
           </div>
           <div className="hero-wallet-wrap">
             <WalletMultiButton>{publicKey ? publicKey.toBase58().slice(0, 4) + '…' + publicKey.toBase58().slice(-4) : 'Conectar wallet'}</WalletMultiButton>
