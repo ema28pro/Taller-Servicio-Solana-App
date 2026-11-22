@@ -67,7 +67,19 @@ Abre la URL local que muestre Vite (por defecto `http://localhost:5173`), conect
 
 ## 4. Pruebas y evidencias
 
-### Prueba on-chain en Solana Devnet (`programa/tests/anchor.test.ts`)
+### Tabla de equivalencia y casos probados (Proyecto propio)
+
+| Caso | Estado inicial / Datos | Operación realizada | Resultado esperado y observado | Evidencia / Error |
+|---|---|---|---|---|
+| **Crear Taller y Registrar Equipo** | Wallet `owner` con SOL en Devnet | `crear_taller` + `registrar_equipo` | Se crean las PDAs `Taller` y `Equipo` (`id_equipo = 1`, `id_counter = 1`) y pueden leerse desde la app. | [Tx en Devnet](https://explorer.solana.com/tx/PPF75y6SLrbNFLuTubfSDvyggdRnFiR5xGuYLrLkekaU35V9x9uZQJ6Zc4LRZxg4MzzUK4JSzP1aVoZpiXU5io2?cluster=devnet) |
+| **Crear Orden válida** | `Taller` y `Equipo #1` existentes | `crear_orden` (`codigo`, `diagnostico`, `costo`) | Se crea PDA `Orden`, se guarda en `equipo.ordenes` y `ordenes_activas` sube a `1`. | [Tx en Devnet](https://explorer.solana.com/tx/2rMqXoesU9aevgLmAShxHZs8PGt5AT1gaJ3i2U8uwNuaAPt7ydiQsHm1FTw9n2K934RVNDdKzQHruzxE2n7qM68T?cluster=devnet) |
+| **Cambiar costo de orden** | `Orden` activa en `Equipo #1` | `cambiar_costo` (`nuevo_costo`) | Se actualiza `orden.costo` conservando la relación con `Equipo`. | [Tx en Devnet](https://explorer.solana.com/tx/22Nkxf3eXAE8ubxdDsGyi5gvw1ztDKRwapmZf4EpYk5skyrtxEqWY4hYe9F3VZ6YDqtcvc56EPPhsqB8UrZ6koHb?cluster=devnet) |
+| **Cerrar orden válida** | `Orden` activa en `equipo.ordenes` | `cerrar_orden` (`close = owner`) | Se retira la PDA de `equipo.ordenes`, `ordenes_activas` baja a `0`, la cuenta se cierra (`null`) y el rent vuelve al `owner`. | [Tx en Devnet](https://explorer.solana.com/tx/VbPGuS2pT9TCe3jnDbtAysXcdFS4wcDeQ6LoC9V17WDe2uhMe1HCBn7YGTZeBn2XGpGA8wWtubmGFhce32zckL3?cluster=devnet) |
+| **Wallet no autorizada** | `Taller` cuyo `owner` es otra wallet | Invocar instrucción con signer distinto | El programa rechaza con `NoOwner` (`6000`) por `has_one = owner` y conserva el estado. | Validado en contrato (`has_one = owner @ Errores::NoOwner`) |
+| **Orden ajena al equipo** | `Equipo` y `Orden` de otro padre | Enviar PDA de orden que no deriva de `equipo` | El programa rechaza con `ConstraintSeeds` (`2006`) y conserva los datos. | Validado por seeds en contexto Anchor |
+| **Límite de 10 elementos (aporte propio)** | `Taller` o `Equipo` con 10 elementos | Intentar `registrar_equipo` o `crear_orden` #11 | El frontend bloquea antes de firmar y el programa rechaza explícitamente con `LimiteAlcanzado` (`6002`). | `require!(...len() < 10, Errores::LimiteAlcanzado)` |
+
+### Prueba integral on-chain en Solana Devnet (`programa/tests/anchor.test.ts`)
 Ejecutada en Solana Playground contra el programa desplegado `6uZx9cK4nttnnUZjzT5GpcjZ1zZsv7CtDjmYDSiCbnQ`:
 
 ```text
@@ -76,9 +88,8 @@ Ejecutada en Solana Playground contra el programa desplegado `6uZx9cK4nttnnUZjzT
   1 passing (5s)
 ```
 
-### Verificaciones del frontend
-- `node scripts/verificar-consistencia.mjs`: **46/46 `[PASS]`**, `0 [FAIL]` (alineación byte a byte de semillas, tipos, orden de argumentos y límites entre `programa/src/lib.rs` y `src/solana/*`).
-- `npm run typecheck` (`tsc -b`): **0 errores**.
+### Verificaciones técnicas del repositorio
 - `npm run comprobar:idl`: `Contrato coherente: IDL, Program ID y cliente generado.`
+- `npm run typecheck` (`tsc -b`): **0 errores**.
 - `npm run build` (`vite build`): **326 módulos transformados**, build de producción exitoso.
-- Pruebas funcionales en vivo desde la interfaz web conectada con wallet en **Solana Devnet** (creación de taller, registro de equipo, creación/actualización/cierre de orden).
+- Pruebas funcionales en vivo desde la interfaz web conectada con wallet en **Solana Devnet** (transacciones reales enlazadas arriba).
