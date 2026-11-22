@@ -1,0 +1,279 @@
+{
+  "version": "0.1.0",
+  "name": "taller",
+  "instructions": [
+    {
+      "name": "crearTaller",
+      "accounts": [
+        {
+          "name": "owner",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "taller",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "nombreTaller",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "registrarEquipo",
+      "accounts": [
+        {
+          "name": "owner",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "taller",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "equipo",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "modelo",
+          "type": "string"
+        }
+      ]
+    },
+    {
+      "name": "crearOrden",
+      "accounts": [
+        {
+          "name": "owner",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "taller",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "equipo",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "orden",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "systemProgram",
+          "isMut": false,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "idEquipo",
+          "type": "u16"
+        },
+        {
+          "name": "codigo",
+          "type": "string"
+        },
+        {
+          "name": "diagnostico",
+          "type": "string"
+        },
+        {
+          "name": "costo",
+          "type": "u32"
+        }
+      ]
+    },
+    {
+      "name": "cambiarCosto",
+      "accounts": [
+        {
+          "name": "owner",
+          "isMut": false,
+          "isSigner": true
+        },
+        {
+          "name": "taller",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "equipo",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "orden",
+          "isMut": true,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "idEquipo",
+          "type": "u16"
+        },
+        {
+          "name": "codigo",
+          "type": "string"
+        },
+        {
+          "name": "nuevoCosto",
+          "type": "u32"
+        }
+      ]
+    },
+    {
+      "name": "cerrarOrden",
+      "accounts": [
+        {
+          "name": "owner",
+          "isMut": true,
+          "isSigner": true
+        },
+        {
+          "name": "taller",
+          "isMut": false,
+          "isSigner": false
+        },
+        {
+          "name": "equipo",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "orden",
+          "isMut": true,
+          "isSigner": false
+        }
+      ],
+      "args": [
+        {
+          "name": "idEquipo",
+          "type": "u16"
+        },
+        {
+          "name": "codigo",
+          "type": "string"
+        }
+      ]
+    }
+  ],
+  "accounts": [
+    {
+      "name": "Taller",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "owner",
+            "type": "publicKey"
+          },
+          {
+            "name": "nombreTaller",
+            "type": "string"
+          },
+          {
+            "name": "equipos",
+            "type": {
+              "vec": "publicKey"
+            }
+          },
+          {
+            "name": "idCounter",
+            "type": "u16"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Equipo",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "idEquipo",
+            "type": "u16"
+          },
+          {
+            "name": "modelo",
+            "type": "string"
+          },
+          {
+            "name": "ordenesActivas",
+            "type": "u16"
+          },
+          {
+            "name": "ordenes",
+            "type": {
+              "vec": "publicKey"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "Orden",
+      "type": {
+        "kind": "struct",
+        "fields": [
+          {
+            "name": "codigo",
+            "type": "string"
+          },
+          {
+            "name": "diagnostico",
+            "type": "string"
+          },
+          {
+            "name": "costo",
+            "type": "u32"
+          }
+        ]
+      }
+    }
+  ],
+  "errors": [
+    {
+      "code": 6000,
+      "name": "NoOwner",
+      "msg": "Error, no eres el owner del taller"
+    },
+    {
+      "code": 6001,
+      "name": "NoOrden",
+      "msg": "Error, la orden no esta en el registro del equipo"
+    },
+    {
+      "code": 6002,
+      "name": "LimiteAlcanzado",
+      "msg": "Error, se alcanzo el limite maximo de 10 elementos"
+    }
+  ],
+  "metadata": {
+    "address": "6uZx9cK4nttnnUZjzT5GpcjZ1zZsv7CtDjmYDSiCbnQ"
+  }
+}
