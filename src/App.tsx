@@ -6,7 +6,6 @@ import { Taller } from './components/Taller';
 import { Icono } from './components/Icono';
 import aula from './config/aula.json';
 import programa from './config/programa.json';
-import { TITULO_APP } from './config/interfaz';
 import { ENDPOINT } from './solana/conexion';
 import { comprobarDevnet } from './solana/seguridad';
 
@@ -35,16 +34,19 @@ export default function App() {
       <div className="sidebar-bottom"><p>FixChain Devnet</p><span>Trazabilidad de reparaciones on-chain</span><a href="https://github.com/ema28pro/Taller-Servicio-Solana-App" target="_blank" rel="noreferrer">Repositorio en GitHub</a></div>
     </aside>
     <div className="main-area">
-      <header className="topbar"><div><span className="topbar-title">{TITULO_APP}</span><span className={errorRed ? 'network-badge warning' : 'network-badge'}>{red}</span></div><WalletMultiButton>{publicKey ? publicKey.toBase58().slice(0, 4) + '…' + publicKey.toBase58().slice(-4) : 'Conectar wallet'}</WalletMultiButton></header>
-      <main>
-        <section className="brand-banner" aria-label="Identidad FixChain">
-          <img src="/banner-fixchain.jpg" alt="FixChain — Taller de Servicio Técnico en Solana" />
-          <div className="brand-banner-overlay">
-            <span className="brand-pill">FIXCHAIN · SOLANA DEVNET</span>
-            <h1>Gestión de talleres, equipos y órdenes on-chain</h1>
-            <p>Cada taller, dispositivo y orden de reparación queda respaldado por PDAs verificables en Solana.</p>
+      <header className="hero-topbar">
+        <img className="hero-topbar-img" src="/banner-fixchain.jpg" alt="FixChain — Taller de Servicio Técnico en Solana" />
+        <div className="hero-topbar-content">
+          <div className="hero-topbar-left">
+            <span className={errorRed ? 'network-badge warning' : 'network-badge'}>{red}</span>
+            <p className="hero-tagline">Gestión de talleres, equipos y órdenes de reparación verificables en Solana.</p>
           </div>
-        </section>
+          <div className="hero-wallet-wrap">
+            <WalletMultiButton>{publicKey ? publicKey.toBase58().slice(0, 4) + '…' + publicKey.toBase58().slice(-4) : 'Conectar wallet'}</WalletMultiButton>
+          </div>
+        </div>
+      </header>
+      <main>
         {vista === 'conexion' ? <Conexion revision={revision} /> : <Taller onCambio={() => setRevision((valor) => valor + 1)} onOcupado={setOcupado} />}
         <footer className="app-footer"><span>RPC: {new URL(ENDPOINT).hostname}</span><details><summary>{programa.esReferencia ? 'Programa de referencia' : 'Programa configurado'}</summary><code className="address">{programa.programId}</code></details></footer>
       </main>
