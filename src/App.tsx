@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import { useConnection, useWallet } from '@solana/wallet-adapter-react';
+import { useState } from 'react';
+import { useWallet } from '@solana/wallet-adapter-react';
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 import { Conexion } from './components/Conexion';
 import { Taller } from './components/Taller';
@@ -7,21 +7,12 @@ import { Icono } from './components/Icono';
 import aula from './config/aula.json';
 import programa from './config/programa.json';
 import { ENDPOINT } from './solana/conexion';
-import { comprobarDevnet } from './solana/seguridad';
 
 export default function App() {
   const [vista, setVista] = useState<'conexion' | 'taller'>(aula.pantallaInicial === 'conexion' ? 'conexion' : 'taller');
   const [revision, setRevision] = useState(0);
   const [ocupado, setOcupado] = useState(false);
   const { publicKey } = useWallet();
-  const [red, setRed] = useState('Verificando RPC…');
-  const [errorRed, setErrorRed] = useState(false);
-  const { connection } = useConnection();
-  useEffect(() => {
-    let activo = true;
-    comprobarDevnet(connection).then(() => { if (activo) { setRed('Devnet verificada'); setErrorRed(false); } }).catch(() => { if (activo) { setRed('Revisa la conexión RPC'); setErrorRed(true); } });
-    return () => { activo = false; };
-  }, [connection]);
   const soloDia3 = aula.modo === 'dia3';
   return <div className="app-layout">
     <aside className="sidebar">
@@ -38,7 +29,6 @@ export default function App() {
         <img className="hero-topbar-img" src="/banner-fixchain.jpg" alt="FixChain — Taller de Servicio Técnico en Solana" />
         <div className="hero-topbar-content">
           <div className="hero-topbar-left">
-            <span className={errorRed ? 'network-badge warning' : 'network-badge'}>{red}</span>
             <p className="hero-tagline">Gestión de talleres, equipos y órdenes de reparación verificables en Solana.</p>
           </div>
           <div className="hero-wallet-wrap">
